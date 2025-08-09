@@ -1,31 +1,21 @@
 package main
 
 import (
-	"chatapp/client"
-	"chatapp/server"
-	"flag"
-	"fmt"
-	"os"
+	"chatapp/handlers"
+	"chatapp/ws"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	mode := flag.String("mode", "", "server or client")
-	addr := flag.String("addr", "localhost:8080", "address")
-	flag.Parse()
+	hub := ws.NewHub()
+	go hub.Run()
 
-	switch *mode {
-	case "server":
-		srv := server.NewServer()
-		fmt.Println("Server listening on", *addr)
-		if err := srv.Listen(*addr); err != nil {
-			fmt.Println("Server error:", err)
-		}
-	case "client":
-		if err := client.Start(*addr); err != nil {
-			fmt.Println("Client error:", err)
-		}
-	default:
-		fmt.Println("Usage: go run main.go -mode=server|client [-addr=localhost:8080]")
-		os.Exit(1)
-	}
+	r := gin.Default()
+	r.GET("/ws", handlers.ServeWs(hub))
+	r.GET("/", func(c *gin.Context) {
+		c.String(200, "Chat server running")
+	})
+
+	r.Run(":8080")
 }
