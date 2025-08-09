@@ -1,21 +1,32 @@
-# Binaries for programs and plugins
+# Binarios compilados
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-*.test
 
-# Output of the go coverage tool
+# Binarios para sistemas Unix
 *.out
 
-# Dependency directories (if using vendoring)
+# Archivos de test de Go
+*.test
+
+# Cache de Go
+*.cache
+/go.sum
+
+# Directorios de dependencias y builds
 vendor/
+/bin/
+/build/
+/dist/
 
-# Go workspace file (Go 1.18+)
-go.work
-go.work.sum
-
-# IDE/editor files (optional, e.g. for VSCode, JetBrains, etc.)
-.vscode/
+# Configuración local del editor
 .idea/
+.vscode/
+*.swp
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
